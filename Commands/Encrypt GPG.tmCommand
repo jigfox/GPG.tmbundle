@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>if test -f $HOME/.gpg-agent-info &amp;&amp; \
+   kill -0 `cut -d: -f 2 $HOME/.gpg-agent-info` 2&gt;/dev/null; then
+     GPG_AGENT_INFO=`cat $HOME/.gpg-agent-info`
+     export GPG_AGENT_INFO   
+else
+     eval `gpg-agent --daemon`
+     echo $GPG_AGENT_INFO &gt;$HOME/.gpg-agent-info
+fi
+
+get_r () {
+  res=$(CocoaDialog 2&gt;/dev/null inputbox --float --no-newline \
+    --title 'Encrypt with GPG' \
+    --informative-text "$1" \
+    --text "$2" \
+    --button1 "$3" --button2 Cancel)
+  [[ ${res:0:1} == 1 ]] &amp;&amp; echo -n "${res:2}"
+}
+
+r=$(get_r 'Who is this going to?' drang OK)
+[[ -z "$r" ]] &amp;&amp; exit_discard
+
+if ! gpg -qear "$r" --no-tty; then
+   exit_show_tool_tip
+fi</string>
+	<key>input</key>
+	<string>document</string>
+	<key>keyEquivalent</key>
+	<string>^~@g</string>
+	<key>name</key>
+	<string>Encrypt GPG</string>
+	<key>output</key>
+	<string>replaceDocument</string>
+	<key>uuid</key>
+	<string>15708279-7F35-452E-8317-A989A3AA721F</string>
+</dict>
+</plist>
