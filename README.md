@@ -18,7 +18,7 @@ Installation:
 Usage:
 ------
 
-Hit "ctrl-alt-command g" and then hit 1 or 2 for Decryption or Encryption
+Hit "⌃⌥⌘G" and then hit 1 or 2 for Decryption or Encryption
 
 License:
 --------
